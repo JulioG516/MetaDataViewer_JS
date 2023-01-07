@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+  <title>MetaData</title>
+  <style>
+    img{
+      border: 1px solid black;
+    }
+    #logo{
+      color: #cce3de;
+    }
+    html{
+      padding-right: 25px;
+      padding-left: 25px;
+      margin-right: auto;
+      margin-left: auto;
+      background-color: #6b9080;
+    }
+    #picture__input {
+    display: none;
+  }
+  .picture {
+    width: 400px;
+    aspect-ratio: 16/9;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    border: 2px dashed currentcolor;
+    cursor: pointer;
+    font-family: sans-serif;
+    transition: color 300ms ease-in-out, background 300ms ease-in-out;
+    outline: none;
+    overflow: hidden;
+  }
+
+  .picture:hover {
+    color: rgb(249, 249, 249);
+    background: #777;
+  }
+  .picture__img {
+    max-width: 100%;
+  }
+  #see{
+    margin-top: 30px;
+    background-color: #a4c3b2;
+    color: black;
+    border-radius: 15px;
+    display: flex;
+  }
+  p{
+    color: #f6fff8;
+  }
+
+
+  </style>
+</head>
+<body>
+  <h4 id="logo">Achilles Metadata</h4>
+  <div class="wrapper">
+    <!-- <h3>Your Image:</h3> -->
+    <label class="picture" for="picture__input" tabIndex="0">
+      <span class="picture__image"></span>
+    </label>
+    <button onclick="getExif()" id="see">View MetaData</button>
+    <input type="file" name="picture__input" id="picture__input">
+
+   
+    
+
+
+
+    <div class="right">
+      <p id="enter"></p>
+    </div> 
+  </div>
+
+  <div>
+    <div>
+    </div>
+  </div>
+
+  <!-- <h6 id="enter"></h6> -->
+
+</body>
+<script>
+  window.onload = getExif;
+
+  const inputFile = document.querySelector("#picture__input");
+  const pictureImage = document.querySelector(".picture__image");
+  const pictureImageTxt = "Choose an image";
+  pictureImage.innerHTML = pictureImageTxt;
+
+  inputFile.addEventListener("change", function (e) {
+    const inputTarget = e.target;
+    const file = inputTarget.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.addEventListener("load", function (e) {
+        const readerTarget = e.target;
+
+        const img = document.createElement("img");
+        img.src = readerTarget.result;
+        img.classList.add("picture__img");
+        img.setAttribute("id", "img1");
+
+        pictureImage.innerHTML = "";
+        pictureImage.appendChild(img);
+      });
+
+      reader.readAsDataURL(file);
+    } else {
+      pictureImage.innerHTML = pictureImageTxt;
+    }
+  });
+
+
+
+
+
+
+
+
+ 
+    // function getExif() {
+    //     var img1 = document.getElementById("img1");
+    //     EXIF.getData(img1, function () {
+    //     var MetaData = EXIF.getAllTags(this);
+    //     console.log(JSON.stringify(MetaData, null, "\t"));
+    //     let list = JSON.stringify(MetaData, null, "\t");
+    //     console.log()
+    //     console.log(MetaData)   
+    //     document.getElementById("enter").innerHTML = list
+    //     for (const prop in list){
+    //       console.log(prop)
+    //     }
+    // });
+
+    function getExif() {
+        var img1 = document.getElementById("img1");
+        EXIF.getData(img1, function () {
+        var data = []
+        data.push(EXIF.getTag(this, "Model")); 
+        data.push(EXIF.getTag(this, "Make"));
+        data.push(EXIF.getTag(this, "ImageWidth"));
+        data.push(EXIF.getTag(this, "ImageHeight"));
+        data.push(EXIF.getTag(this, "Software"));
+        data.push(EXIF.getTag(this, "DateTime"));
+        data.push(EXIF.getTag(this, "GPSLatitude"));
+        data.push(EXIF.getTag(this, "GPSLongitude"));
+        data.push(EXIF.getTag(this, "GPSAltitude"));
+       
+        console.log(data)
+        
+        for (i = 0; i <data.length; i++) {
+              if (data [i] == undefined) {
+              data[i] = "Not Found"
+              console.log(data[i])
+            }
+        }
+     
+        console.log(data)
+
+        document.getElementById("enter").innerHTML = `
+        Model: ${data[0]}<br>
+        Make: ${data[1]}<br>
+        Image Width: ${data[2]}<br>
+        Image Height: ${data[3]}<br>
+        Software: ${data[4]}<br>
+        Date: ${data[5]}<br>
+        <h4>GPS Data:</h4>
+        GPS Latitude: ${data[6]}<br>
+        GPS Longitude: ${data[7]}<br>
+        GPS Altitude: ${data[8]}<br>
+        `
+        
+   
+      
+    });
+  }
+</script>
+</html>
