@@ -122,11 +122,6 @@
   });
 
 
-
-
-
-
-
     function getExif() {
         var img1 = document.getElementById("img1");
         EXIF.getData(img1, function () {
@@ -141,16 +136,13 @@
         data.push(EXIF.getTag(this, "GPSLongitude"));
         data.push(EXIF.getTag(this, "GPSAltitude"));
        
-        console.log(data)
         
         for (i = 0; i <data.length; i++) {
               if (data [i] == undefined) {
               data[i] = "Not Found"
-              console.log(data[i])
             }
         }
      
-        console.log(data)
 
         document.getElementById("enter").innerHTML = `
         Model: ${data[0]}<br>
