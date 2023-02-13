@@ -1,4 +1,4 @@
-#Image Metadata Viewer
+# Image Metadata Viewer
 A simple HTML and JavaScript application for viewing image metadata.
 
 # Features
